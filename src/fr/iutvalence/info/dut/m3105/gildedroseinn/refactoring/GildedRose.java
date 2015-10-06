@@ -25,24 +25,19 @@ public class GildedRose
 		items.add(new Item("Conjured Mana Cake", 3, 6));
 
 		updateQuality();
+		updateSellIn();
+		updateQualitybySellIn();
 	}
 
+	/*
+	 * Pour tous les items, on va sous certaines conditions, baisser la qualité ou bien il va l'augmenter
+	 */
 	public static void updateQuality()
 	{
 		for (int i = 0; i < items.size(); i++)
 		{
-			if ((!"Aged Brie".equals(items.get(i).getName()))
-					&& !"Backstage passes to a TAFKAL80ETC concert".equals(items.get(i).getName()))
-			{
-				if (items.get(i).getQuality() > 0)
-				{
-					if (!"Sulfuras, Hand of Ragnaros".equals(items.get(i).getName()))
-					{
-						items.get(i).setQuality(items.get(i).getQuality() - 1);
-					}
-				}
-			}
-			else
+			if (("Aged Brie".equals(items.get(i).getName())) 
+				|| "Backstage passes to a TAFKAL80ETC concert".equals(items.get(i).getName())) 
 			{
 				if (items.get(i).getQuality() < 50)
 				{
@@ -54,7 +49,7 @@ public class GildedRose
 						{
 							if (items.get(i).getQuality() < 50)
 							{
-								items.get(i).setQuality(items.get(i).getQuality() + 1);
+								items.get(i).setQuality(items.get(i).getQuality() + 2);
 							}
 						}
 
@@ -62,46 +57,95 @@ public class GildedRose
 						{
 							if (items.get(i).getQuality() < 50)
 							{
-								items.get(i).setQuality(items.get(i).getQuality() + 1);
+								items.get(i).setQuality(items.get(i).getQuality() + 3);
 							}
 						}
 					}
 				}
-			}
-
-			if (!"Sulfuras, Hand of Ragnaros".equals(items.get(i).getName()))
+			} 
+			else 
 			{
-				items.get(i).setSellIn(items.get(i).getSellIn() - 1);
-			}
-
-			if (items.get(i).getSellIn() < 0)
-			{
-				if (!"Aged Brie".equals(items.get(i).getName()))
+				if (items.get(i).getQuality() > 0)
 				{
-					if (!"Backstage passes to a TAFKAL80ETC concert".equals(items.get(i).getName()))
+					if (!"Sulfuras, Hand of Ragnaros".equals(items.get(i).getName()))
 					{
-						if (items.get(i).getQuality() > 0)
-						{
-							if (!"Sulfuras, Hand of Ragnaros".equals(items.get(i).getName()))
-							{
-								items.get(i).setQuality(items.get(i).getQuality() - 1);
-							}
-						}
-					}
-					else
-					{
-						items.get(i).setQuality(items.get(i).getQuality() - items.get(i).getQuality());
-					}
-				}
-				else
-				{
-					if (items.get(i).getQuality() < 50)
-					{
-						items.get(i).setQuality(items.get(i).getQuality() + 1);
+						items.get(i).setQuality(items.get(i).getQuality() - 1);
 					}
 				}
 			}
 		}
 	}
+	/*
+	 * Décrémentation de la date limite pour chaque item
+	 */
+	public static void updateSellIn()
+	{
+		for (int j = 0; j < items.size(); j++)
+		{
 
+			if (!"Sulfuras, Hand of Ragnaros".equals(items.get(j).getName()))
+			{
+				items.get(j).setSellIn(items.get(j).getSellIn() - 1);
+			}
+		}
+	}
+	
+	/*
+	 * Mise a jour de la qualité quand la date limite est dépassé pour chaque item
+	 */
+	public static void updateQualitybySellIn()
+	{
+		for (int k = 0; k < items.size(); k++)
+		{
+
+			if (items.get(k).getSellIn() < 0)
+			{
+				if ("Aged Brie".equals(items.get(k).getName())) 
+				{
+					if (items.get(k).getQuality() < 50)
+					{
+						items.get(k).setQuality(items.get(k).getQuality() + 1);
+					}
+				} 
+				else 
+				{
+					if ("Backstage passes to a TAFKAL80ETC concert".equals(items.get(k).getName())) 
+					{
+						items.get(k).setQuality(items.get(k).getQuality() - items.get(k).getQuality());
+					} 
+					else 
+					{
+						if (items.get(k).getQuality() > 0)
+						{
+							if (!"Sulfuras, Hand of Ragnaros".equals(items.get(k).getName()))
+							{
+								items.get(k).setQuality(items.get(k).getQuality() - 2);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public static void conjuratedItem(boolean conjurate)
+	{
+		for (int l = 0; l < items.size(); l++)
+		{
+			if (conjurate == true)
+			{
+				if (!"Sulfuras, Hand of Ragnaros".equals(items.get(l).getName()))
+				{
+					items.get(l).setQuality(items.get(l).getQuality() -2);
+				}
+			}
+			else
+			{
+				if (!"Sulfuras, Hand of Ragnaros".equals(items.get(l).getName()))
+				{
+					items.get(l).setQuality(items.get(l).getQuality() -1);
+				}
+			}
+		}
+	}
 }
